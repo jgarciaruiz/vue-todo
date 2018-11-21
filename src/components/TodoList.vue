@@ -20,9 +20,9 @@
       </div>
       <div v-if="completed.length" class="completed-tasks">
         <div class="added-tasks">
-          <h3>Completed tasks ({{completed.length}} of {{incompleted}})</h3>
+          <h3>Completed tasks ({{incompleted.length}})</h3>
           <ul>
-            <li v-for="(todo, index) in todoList" :key="index">
+            <li v-for="(todo, index) in completed" :key="index">
               <p>{{index+1}}. {{ todo.item }} <button @click="undo(todo)">Undo</button></p>
             </li>
           </ul>
@@ -46,10 +46,10 @@ export default {
   },
   computed: {
     completed: function () {
-      return this.todoList.filter(item => item.completed)
+      return this.todoList.filter(todo => todo.completed)
     },
     incompleted: function () {
-      return this.todoList.filter(item => !item.completed)
+      return this.todoList.filter(todo => !todo.completed)
     }
   },  
   methods: {
