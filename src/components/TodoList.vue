@@ -8,9 +8,9 @@
       <div v-if="incompleted.length" class="added-tasks">
         <h3>Pending tasks ({{incompleted.length}})</h3>
         <ul>
-          <li v-for="(todo, index) in todoList" :key="index">
+          <li v-for="(todo, index) in todoList" :key="index" :class="{done:todo.completed == true}">
             <p>
-              <input type="checkbox" @change="complete(todo)">{{index+1}}. {{ todo.item }} <button @click="remove()">Delete</button>
+              <input type="checkbox" @change="complete(todo)">{{ todo.item }} <button @click="remove(todo)" :disabled="todo.completed == true">Delete</button>
               </p>
           </li>
         </ul>
@@ -23,7 +23,7 @@
           <h3>Completed tasks ({{incompleted.length}})</h3>
           <ul>
             <li v-for="(todo, index) in completed" :key="index">
-              <p>{{index+1}}. {{ todo.item }} <button @click="undo(todo)">Undo</button></p>
+              <p>{{ todo.item }} <button @click="undo(todo)">Undo</button></p>
             </li>
           </ul>
         </div>
@@ -90,4 +90,5 @@ li {
 	color: #d9d9d9;
 	text-decoration: line-through;
 }
+
 </style>
