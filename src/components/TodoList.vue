@@ -1,16 +1,16 @@
 <template>
   <div class="todo-list">
     <div class="addbox-wr">
-      <input type="text" name="addbox" v-model.trim="addBox" v-on:keyup.enter="addTodo">
-      <button @click="addTodo()">Add Task</button>
+      <input type="text" name="addbox" v-model.trim="addBox" @keyup.enter="add()">
+      <button @click="add()">Add Task</button>
     </div>
     <div v-if="todoList.length">
-      <div v-if="incompletedTasks.length" class="added-tasks">
-        <h3>Pending tasks ({{incompletedTasks.length}})</h3>
+      <div v-if="incompleted.length" class="added-tasks">
+        <h3>Pending tasks ({{incompleted.length}})</h3>
         <ul>
           <li v-for="(todo, index) in todoList" :key="index">
             <p>
-              <input type="checkbox" v-on:change="completeTask(todo)">{{index+1}}. {{ todo.item }} <button @click="deleteTodo(todo)">Delete</button>
+              <input type="checkbox" @change="complete(todo)">{{index+1}}. {{ todo.item }} <button @click="remove()">Delete</button>
               </p>
           </li>
         </ul>
@@ -18,12 +18,12 @@
       <div v-else>
         <p>All tasks completed!</p>
       </div>
-      <div v-if="completedTasks.length" class="completed-tasks">
+      <div v-if="completed.length" class="completed-tasks">
         <div class="added-tasks">
-          <h3>Completed tasks ({{completedTasks.length}} of {{incompletedTasks}})</h3>
+          <h3>Completed tasks ({{completed.length}} of {{incompleted}})</h3>
           <ul>
             <li v-for="(todo, index) in todoList" :key="index">
-              <p>{{index+1}}. {{ todo.item }} <button @click="undoComplete(todo)">Undo</button></p>
+              <p>{{index+1}}. {{ todo.item }} <button @click="undo(todo)">Undo</button></p>
             </li>
           </ul>
         </div>
@@ -37,46 +37,36 @@
 
 <script>
 export default {
-  name: 'todoList',
-  props: {
-    
-  },
-
-  computed: {
-    completedTasks: function () {
-      return this.todoList.filter(function(item) { 
-        return item.completed
-      })
-    },
-    incompletedTasks: function () {
-      return this.todoList.filter(function(item) { 
-        return !item.completed
-      })
-    }
-  },  
-
-  methods: {
-    addTodo: function(todo) {
-      todo = this.addBox;
-      this.todoList.push({item: todo, completed: false});
-      this.addBox = '';
-    },
-    deleteTodo: function(todo) {
-      var index = this.todoList.indexOf(todo);
-      this.todoList.splice(index, 1);
-    },
-    completeTask: function(todo){
-      todo.completed = !todo.completed;
-    },
-    undoComplete: function(todo){
-      todo.completed = !todo.completed;
-    }
-  },
-  
+  name: 'TodoList',
   data () {
     return {
       todoList: [],
       addBox: ''
+    }
+  },
+  computed: {
+    completed: function () {
+      return this.todoList.filter(item => item.completed)
+    },
+    incompleted: function () {
+      return this.todoList.filter(item => !item.completed)
+    }
+  },  
+  methods: {
+    add: function(todo) {
+      todo = this.addBox;
+      this.todoList.push({item: todo, completed: false});
+      this.addBox = '';
+    },
+    remove: function(todo) {
+      var index = this.todoList.indexOf(todo);
+      this.todoList.splice(index, 1);
+    },
+    complete: function(todo){
+      todo.completed = !todo.completed;
+    },
+    undo: function(todo){
+      todo.completed = !todo.completed;
     }
   }
 }
