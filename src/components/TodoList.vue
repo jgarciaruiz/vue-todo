@@ -1,9 +1,9 @@
 <template>
   <div class="todo-list">
-    <div class="addbox-wr">
-      <input type="text" name="addbox" v-model.trim="addBox" @keyup.enter="add()">
-      <button @click="add()">Add Task</button>
-    </div>
+    <form class="addbox-wr" @submit.prevent="add">
+      <input type="text" name="addbox" v-model.trim="addBox" @keyup.enter="add">
+      <button>Add Task</button>
+    </form>
     <div v-if="todoList.length">
       <div v-if="incompleted.length" class="added-tasks">
         <h3>Pending tasks ({{incompleted.length}})</h3>
